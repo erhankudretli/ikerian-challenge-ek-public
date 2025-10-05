@@ -1,5 +1,5 @@
 name: Terraform Validate & Plan
-run-name: Terraform Validation and Plan in Branch ${{ github.ref_name }} # Run Number ${{ github.run_number }}s
+run-name: Terraform Validation and Plan in Branch ${{ github.ref_name }}  - Run Number ${{ github.run_number }}
 
 on:
   push:

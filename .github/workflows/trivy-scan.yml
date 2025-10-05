@@ -1,5 +1,5 @@
 name: Trivy IaC Security Scan
-run-name: Trivy IaC Security Scan in Branch ${{ github.ref_name }} # Run Number ${{ github.run_number }}s
+run-name: Trivy IaC Security Scan in Branch ${{ github.ref_name }}  - Run Number ${{ github.run_number }}
 
 on:
   push:         # triggers on every push 

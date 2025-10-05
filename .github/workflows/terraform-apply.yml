@@ -1,6 +1,5 @@
 name: Terraform Apply 
-run-name: Deployment to ${{ github.ref_name }} # Run Number ${{ github.run_number }}
-
+run-name: Deployment to ${{ github.ref_name }}  - Run Number ${{ github.run_number }}
 on:
   push:
     branches:
@@ -81,12 +80,12 @@ jobs:
 
       - name: Summary (Terraform Plan + Cost)
         run: |
-          echo "## 🧱 Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "##  Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat ${{ steps.set-dir.outputs.dir }}/tfplan.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-          echo "## 💰 Infracost Estimate" >> $GITHUB_STEP_SUMMARY
+          echo "##  Infracost Estimate" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat infracost.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

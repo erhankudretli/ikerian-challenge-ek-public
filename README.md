@@ -105,6 +105,48 @@ Here’s the overall flow:
 
 ---
 
+## 4. CI/CD Workflows
+### A. Current CI/CD Features
+- **Deployment Branches:**  
+  The main deployment branches are dev and prd. These branches are protected and require manual approval before applying any infrastructure changes.
+
+- **Automatic Triggers:**  
+Every push to any branch triggers:
+
+    - Trivy Static Security Scan: Runs static IaC and dependency security analysis. The scan results are stored as build artifacts.
+
+    - Terraform Validate & Plan: Ensures Terraform syntax is valid and generates a human-readable plan (tfplan.txt) showing upcoming infrastructure changes.
+
+- **Pre-Apply Summary and Cost Check:**  
+  Before applying changes, the GitHub Actions Step Summary shows:
+
+    - The Terraform plan (plain text, color-stripped for readability).
+
+    - The Infracost cost estimation for all affected AWS resources.
+
+- **Manual Deployment Approval:**  
+ The terraform apply step requires manual approval through GitHub’s Deployment Environment Approval feature. This ensures that cost and plan outputs are reviewed before any changes are applied to AWS.
+
+ - **Artifacts and Traceability:**  
+ The following outputs are uploaded as workflow artifacts for transparency and reproducibility:
+
+    - tfplan.binary – the compiled Terraform plan file.
+
+    - tfplan.txt – the human-readable plan summary.
+
+    - infracost.txt – the cost estimation report.
+
+### B.Upcoming CI/CD Enhancements
+- **Terraform Format (terraform fmt):**  
+  Automatic code formatting to ensure consistent Terraform style and structure.
+
+- **Terraform Docs (terraform-docs):**  
+  Automated documentation generation from module inputs and outputs.
+
+- **Branch Protection Rules:**  
+  Stricter enforcement of branch protection on dev and prd — including required reviews, successful checks, and restricted direct pushes.
+
+---
 ## Conclusion
 
 Overall, this was a fun little project to put together.  

@@ -1,4 +1,4 @@
-name: Terraform Apply (Requires Approval)
+name: Terraform Apply
 run-name: Deployment to ${{ github.ref_name }} - Run Number ${{ github.run_number }}
 
 # Trigger on push to 'dev' or 'prd' branches only.
@@ -15,9 +15,6 @@ permissions:
   pull-requests: write 
 
 jobs:
-  # --------------------------------------------------------------------------------
-  # JOB 1: PLAN, VALIDATE, ARTIFACTS, AND COST ESTIMATION (NO APPLY)
-  # --------------------------------------------------------------------------------
   terraform-plan:
     runs-on: ubuntu-latest
     
@@ -108,9 +105,7 @@ jobs:
           cat infracost.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-  # --------------------------------------------------------------------------------
-  # JOB 2: APPROVED APPLY (REQUIRES MANUAL APPROVAL VIA ENVIRONMENT)
-  # --------------------------------------------------------------------------------
+
   terraform-apply:
     needs: terraform-plan # Must wait for plan/cost estimation to finish.
     runs-on: ubuntu-latest

@@ -83,7 +83,8 @@ jobs:
           api-key: ${{ secrets.INFRACOST_API_KEY }} # API key for Infracost Cloud.
 
       - name: 📈 Infracost Breakdown & Comment
-        uses: infracost/actions/github-comment@v2
+        # HATA DÜZELTİLDİ: 'github-comment' yerine 'comment' kullanıldı.
+        uses: infracost/actions/comment@v2
         with:
           # Path to the binary plan file.
           path: ${{ steps.set-dir.outputs.dir }}/tfplan.binary 

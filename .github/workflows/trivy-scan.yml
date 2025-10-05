@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  trivy:
+  trivy-scan:
     runs-on: ubuntu-latest
 
     steps:

@@ -37,3 +37,11 @@ module "lambda" {
   source_bucket_name        = module.raw-data-bucket.bucket_name
   source_bucket_arn         = module.raw-data-bucket.bucket_arn
 }
+
+############
+# S3 Bucket module that creates an object storage bucket for extracted data  
+############
+module "test-data-bucket" {
+  source      = "../modules/s3"
+  bucket_name = "${var.project}-${var.env}-test-data-bucket"
+}

@@ -1,4 +1,4 @@
-name: 🛠️ Terraform Apply (Requires Approval)
+name: Terraform Apply (Requires Approval)
 run-name: Deployment to ${{ github.ref_name }} - Run Number ${{ github.run_number }}
 
 # Trigger on push to 'dev' or 'prd' branches only.
@@ -31,37 +31,37 @@ jobs:
     environment: ${{ github.ref_name }} 
 
     steps:
-      - name: ⬇️ Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       # Set working directory (dev or prd).
-      - name: ⚙️ Set Working Directory
+      - name: Set Working Directory
         id: set-dir
         run: |
           echo "dir=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
-      - name: ⚙️ Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.0
 
-      - name: ♻️ Terraform Init
+      - name: Terraform Init
         id: init
         run: terraform init
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
-      - name: ✅ Terraform Validate
+      - name: Terraform Validate
         run: terraform validate
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
-      - name: 📝 Terraform Plan & Save to Binary
+      - name: Terraform Plan & Save to Binary
         id: plan
         run: |
           # Saves the plan as both human-readable text (no color) and binary artifact.
           terraform plan -no-color -var-file=terraform.tfvars -out=tfplan.binary | tee tfplan.txt
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
-      - name: ⬆️ Upload Plan Artifacts
+      - name: Upload Plan Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.ref_name }}-tfplan-${{ github.run_id }}
@@ -70,12 +70,12 @@ jobs:
             ${{ steps.set-dir.outputs.dir }}/tfplan.binary
 
       # ---------------- INFRACOST COST ESTIMATION ----------------
-      - name: 💰 Setup Infracost CLI
+      - name: Setup Infracost CLI
         uses: infracost/actions/setup@v2
         with:
           api-key: ${{ secrets.INFRACOST_API_KEY }}
 
-      - name: 📈 Run Infracost Breakdown
+      - name: Run Infracost Breakdown
         run: |
           infracost breakdown \
             --path ${{ steps.set-dir.outputs.dir }}/tfplan.binary \
@@ -87,20 +87,20 @@ jobs:
         env:
           INFRACOST_API_KEY: ${{ secrets.INFRACOST_API_KEY }} 
 
-      - name: ⬆️ Upload Infracost Artifact
+      - name: Upload Infracost Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.ref_name }}-infracost-${{ github.run_id }}
           path: infracost.txt
 
-      - name: 📄 Summary (Terraform Plan + Cost)
+      - name: Summary (Terraform Plan + Cost)
         run: |
-          echo "## 📄 Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat ${{ steps.set-dir.outputs.dir }}/tfplan.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-          echo "## 💰 Infracost Estimate" >> $GITHUB_STEP_SUMMARY
+          echo "## Infracost Estimate" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat infracost.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
@@ -124,28 +124,28 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
-      - name: ⚙️ Set Working Directory
+      - name: Set Working Directory
         id: set-dir
         run: |
           echo "dir=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
-      - name: ⚙️ Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.3.0
 
       # Download the binary plan artifact for safe application.
-      - name: ⬇️ Download Plan Artifact
+      - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
           name: ${{ github.ref_name }}-tfplan-${{ github.run_id }}
           path: ${{ steps.set-dir.outputs.dir }} # Download to the working directory.
 
-      - name: ♻️ Terraform Init (Required after downloading artifact)
+      - name: Terraform Init (Required after downloading artifact)
         id: init
         run: terraform init
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
-      - name: 🚀 Terraform Apply
+      - name: Terraform Apply
         run: terraform apply -auto-approve tfplan.binary
         working-directory: ${{ steps.set-dir.outputs.dir }}

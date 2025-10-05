@@ -29,14 +29,16 @@ jobs:
           terraform_version: 1.3.0 
 
       - name: Terraform Init
-        run: terraform -chdir=dev init -backend-config=backend.tf
+        run: terraform
+        working-directory: dev
 
       - name: Terraform Validate
-        run: terraform -chdir=dev validate
+        run: terraform validate
       - name: Terraform Plan (readable)
         id: plan
         run: |
-          terraform -chdir=dev plan -var-file=dev/terraform.tfvars | tee dev/tfplan.txt
+          terraform plan | tee ./tfplan.txt
+        working-directory: dev  
 
       - name: Upload Terraform Plan Artifact
         uses: actions/upload-artifact@v4

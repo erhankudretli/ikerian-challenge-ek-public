@@ -28,7 +28,7 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
     
     # This job doesn't need environment approval, it just prepares the plan.
-    environment: ${{ github.ref_name }} 
+    #environment: ${{ github.ref_name }} 
 
     steps:
       - name: Checkout code
@@ -95,6 +95,9 @@ jobs:
 
       - name: Summary (Terraform Plan + Cost)
         run: |
+          echo "## MANUAL APPROVAL REQUIRED: Please review the Plan and Cost before approving deployment to ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          
           echo "## Terraform Plan Summary" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat ${{ steps.set-dir.outputs.dir }}/tfplan.txt >> $GITHUB_STEP_SUMMARY

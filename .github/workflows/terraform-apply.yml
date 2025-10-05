@@ -77,20 +77,21 @@ jobs:
       # --------------------------------------------------------------------------------
       # INFRACOST (Cost Estimation)
       # --------------------------------------------------------------------------------
-      # The separate Setup step is removed. The pull-request action handles the breakdown,
-      # commenting, and dependency setup implicitly.
-      
-      - name: 📈 Infracost Breakdown & Comment
-        # FIX: Using the combined 'pull-request' action resolves the path resolution error.
-        uses: infracost/actions/pull-request@v2
+      # FIX: Re-introducing the Setup step to ensure the CLI is properly installed.
+      - name: 💰 Setup Infracost CLI
+        uses: infracost/actions/setup@v2
         with:
-          # API key for Infracost Cloud, passed directly to the combined action.
-          api-key: ${{ secrets.INFRACOST_API_KEY }} 
+          api-key: ${{ secrets.INFRACOST_API_KEY }} # API key provided here.
+
+      - name: 📈 Infracost Breakdown & Comment
+        # FIX: Using 'comment@v2' which is often more stable than 'pull-request@v2'
+        uses: infracost/actions/comment@v2
+        with:
           # Path to the binary plan file.
           path: ${{ steps.set-dir.outputs.dir }}/tfplan.binary 
           # Required for posting GitHub comments.
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          # No extra flags needed here.
+          # api-key artık yukarıdaki Setup adımında sağlandı.
 
   # --------------------------------------------------------------------------------
   # STAGE 2: APPROVED APPLY

@@ -156,23 +156,19 @@ jobs:
         run: terraform apply -auto-approve tfplan.binary
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
-      - name: Generate Terraform Docs
+# In the 'terraform-apply' job, replace the two steps for docs generation and commit.
+
+      - name: Generate Terraform Docs and Push
         uses: terraform-docs/gh-actions@v1.1.0
         with:
-          output-file: terraform-docs.md
+          # 🎯 Set the working-dir to the correct environment (dev or prd)
+          working-dir: ${{ steps.set-dir.outputs.dir }} 
+          # 📄 Output file name
+          output-file: ../terraform-docs.md
+          # ✍️ Output mode (to inject between comments)
           output-method: inject
-          working-dir: ${{ steps.set-dir.outputs.dir }}
-
-      - name: Commit & Push Updated Docs
-        run: |
-          cd ${{ steps.set-dir.outputs.dir }}
-          if [[ -n "$(git status --porcelain)" ]]; then
-            echo "Terraform docs updated, committing changes..."
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add terraform-docs.md
-            git commit -m "chore(docs): auto-update terraform-docs after apply"
-            git push
-          else
-            echo "No documentation changes detected."
-          fi      
+          # 🚀 Automatically commit and push if changes are detected
+          git-push: "true" 
+          # 🤖 Set the commit message and committer details
+          git-commit-message: "chore(docs): auto-update terraform-docs after apply"
+          git-commit-author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"

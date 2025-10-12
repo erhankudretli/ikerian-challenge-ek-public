@@ -122,6 +122,10 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - name: Set Working Directory
         id: set-dir
         run: |
@@ -147,3 +151,25 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan.binary
         working-directory: ${{ steps.set-dir.outputs.dir }}
+
+      - name: Generate Terraform Docs
+        uses: terraform-docs/gh-actions@v1.1.0
+        with:
+          config-file: .terraform-docs.yml
+          output-file: terraform-docs.md
+          output-method: inject
+          working-dir: ${{ steps.set-dir.outputs.dir }}
+
+      - name: Commit & Push Updated Docs (if changed)
+        run: |
+          cd ${{ steps.set-dir.outputs.dir }}
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Terraform docs updated, committing changes..."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add README.md
+            git commit -m "chore(docs): auto-update terraform-docs after apply"
+            git push
+          else
+            echo "No documentation changes detected."
+          fi      

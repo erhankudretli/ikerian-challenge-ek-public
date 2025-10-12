@@ -7,7 +7,7 @@ variable "owner" {
   type        = string
 }
 variable "project" {
-  description = "The name of the project this infrastructure belongs to (e.g., 'ikerian-challenge')."
+  description = "The name of the project this infrastructure belongs to (e.g.,   'ikerian-challenge')."
   type        = string
 }
 data "aws_caller_identity" "current" {} #to help terraform-docs to understand the Providers is using 

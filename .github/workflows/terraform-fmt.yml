@@ -1,0 +1,52 @@
+name: Terraform Format Check
+run-name: Terraform FMT on PR 
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - prd
+
+permissions:
+  contents: write 
+  pull-requests: write
+
+jobs:
+  terraform-fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.0
+
+      - name: Run Terraform FMT Check
+        id: fmt
+        run: |
+          echo "Running terraform fmt..."
+          terraform fmt -recursive -check -diff || echo "format_error=true" >> $GITHUB_ENV
+
+      - name: Auto-format (if enabled)
+        if: env.format_error == 'true'
+        run: |
+          echo "Reformatting Terraform code..."
+          terraform fmt -recursive
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: auto-format terraform files"
+          git push
+
+      - name: Comment on PR
+        if: env.format_error == 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+              Terraform files were auto-formatted by CI.
+              Please review the changes before merging.

@@ -40,6 +40,7 @@ def lambda_handler(event, context):
             return {'statusCode': 400, 'body': 'No records'}
 
         record = event['Records'][0]
+        print(record)
         source_bucket = record['s3']['bucket']['name']
         source_key = urllib.parse.unquote_plus(record['s3']['object']['key'])
 
@@ -73,6 +74,12 @@ def lambda_handler(event, context):
                 "patient_id": item.get("patient_id"),
                 "patient_name": item.get("patient_name")
             }
+
+            if not patient_id and not patient_name:
+                logger.warning(f"${item} in ${data_list} is not found ")
+
+
+    
             extracted_data.append(extracted_record)
             
         logger.info(f"Transformation complete. {len(extracted_data)} records extracted.")

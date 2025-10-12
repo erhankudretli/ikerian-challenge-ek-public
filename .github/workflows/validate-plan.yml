@@ -3,7 +3,6 @@ run-name: Terraform Validation and Plan in Branch ${{ github.ref_name }}  - Run 
 
 on:
   push:
-    branches: ['**']
     branches-ignore:
      - dev
      - prd

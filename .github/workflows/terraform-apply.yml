@@ -10,7 +10,7 @@ on:
 
 # Requires 'write' permissions for state manipulation.
 permissions:
-  contents: read 
+  contents: write 
 # 'pull-requests: write' is required for adding PR comments (e.g., Infracost).
   pull-requests: write 
 

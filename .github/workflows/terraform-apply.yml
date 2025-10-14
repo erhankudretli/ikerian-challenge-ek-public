@@ -161,18 +161,16 @@ jobs:
         run: |
             rm -f ${{ steps.set-dir.outputs.dir }}/tfplan.binary
             rm -f ${{ steps.set-dir.outputs.dir }}/tfplan.txt
-            # Crash log'ları da silmek iyi bir uygulamadır
             rm -f crash.log
       - name: Generate Terraform Docs and Push
-        uses: terraform-docs/gh-actions@v1.1.0
+        uses: terraform-docs/gh-actions@v1.3.0
         with:
           # 🎯 Set the working-dir to the correct environment (dev or prd)
-          working-dir: ${{ steps.set-dir.outputs.dir }} 
+          working-dir: ./dev
           # 📄 Output file name
           output-file: ../terraform-docs.md
           # ✍️ Output mode (to inject between comments)
           output-method: inject
-          extra_args: "--show required --show description --show type --show providers main.tf vars.tf backend.tf"
           # 🚀 Automatically commit and push if changes are detected
           git-push: "true" 
           # 🤖 Set the commit message and committer details

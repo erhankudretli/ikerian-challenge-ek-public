@@ -168,7 +168,7 @@ jobs:
           # 🎯 Set the working-dir to the correct environment (dev or prd)
           working-dir: ./dev
           # 📄 Output file name
-          output-file: ../terraform-docs.md
+          output-file: ./terraform-docs.md
           # ✍️ Output mode (to inject between comments)
           output-method: inject
           # 🚀 Automatically commit and push if changes are detected

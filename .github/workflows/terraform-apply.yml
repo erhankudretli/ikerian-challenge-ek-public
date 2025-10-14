@@ -157,7 +157,12 @@ jobs:
         working-directory: ${{ steps.set-dir.outputs.dir }}
 
 # In the 'terraform-apply' job, replace the two steps for docs generation and commit.
-
+      - name: Clean up temporary files
+        run: |
+            rm -f ${{ steps.set-dir.outputs.dir }}/tfplan.binary
+            rm -f ${{ steps.set-dir.outputs.dir }}/tfplan.txt
+            # Crash log'ları da silmek iyi bir uygulamadır
+            rm -f crash.log
       - name: Generate Terraform Docs and Push
         uses: terraform-docs/gh-actions@v1.1.0
         with:

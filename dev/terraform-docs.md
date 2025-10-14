@@ -8,7 +8,9 @@
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
 
 ## Modules
 
@@ -21,15 +23,17 @@ No providers.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_env"></a> [env](#input\_env) | n/a | `any` | n/a | yes |
-| <a name="input_owner"></a> [owner](#input\_owner) | n/a | `any` | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | n/a | `any` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | The deployment environment (e.g., 'dev', 'prd'). Used for naming resources and tagging. | `string` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | The name or ID of the team/individual responsible for this infrastructure. | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | The name of the project this infrastructure belongs to (e.g.,   'ikerian-challenge'). | `string` | n/a | yes |
 
 ## Outputs
 

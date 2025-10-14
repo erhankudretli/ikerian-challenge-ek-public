@@ -25,7 +25,7 @@ provider "aws" {
     tags = {
       env       = "dev"
       owner     = "ek"
-      project   = "aws-pipeline"
+      project   = "aws-data-pipeline"
       ManagedBy = "Terraform"
     }
   }

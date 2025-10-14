@@ -172,7 +172,7 @@ jobs:
           output-file: ../terraform-docs.md
           # ✍️ Output mode (to inject between comments)
           output-method: inject
-          extra_args: "--show required --show description --show type --show providers"
+          extra_args: "--show required --show description --show type --show providers main.tf vars.tf backend.tf"
           # 🚀 Automatically commit and push if changes are detected
           git-push: "true" 
           # 🤖 Set the commit message and committer details

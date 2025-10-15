@@ -106,7 +106,6 @@ Here’s the overall flow:
 ---
 
 ## 4. CI/CD Workflows
-### A. Current CI/CD Features
 - **Deployment Branches:**  
   The main deployment branches are dev and prd. These branches are protected and require manual approval before applying any infrastructure changes.
 
@@ -136,24 +135,16 @@ Every push to any branch triggers:
 
     - infracost.txt – the cost estimation report.
 
-### B.Upcoming CI/CD Enhancements
 - **Terraform Format (terraform fmt):**  
   Automatic code formatting to ensure consistent Terraform style and structure.
 
 - **Terraform Docs (terraform-docs):**  
   Automated documentation generation from module inputs and outputs.
 
+    - terraform-docs.md – a dynamically generated Markdown file summarizing module inputs, outputs, providers, and requirements.
+
 - **Branch Protection Rules:**  
   Stricter enforcement of branch protection on dev and prd — including required reviews, successful checks, and restricted direct pushes.
-
----
-## Conclusion
-
-Overall, this was a fun little project to put together.  
-I didn’t run into anything too unexpected with AWS or Terraform, but I did spend some time improving the Python logging setup — hadn’t really used it in detail before.  
-It ended up taking me a bit longer than the expected 1.5–2 hours. Most of the extra time went into polishing things — mainly making the logging cleaner, the Terraform modules more readable, and testing a few edge cases I hadn’t thought of at first.
-
-I’ve just started publishing my projects publicly on GitHub (since Sept 1st), so it’s still early days — but you can check out more at **[erhankudretli.github.io](https://erhankudretli.github.io)**.
 
 ---
 
